@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from desk import NOW, Desk, Ticket, redact, ticket_refs
+from report import rows, status_counts, work_queue
 from stats import breached, resolution_hours, summary
 from storage import load_desk, save_desk
 
@@ -92,3 +93,22 @@ def test_breach_mask(sample_desk):
 
 def test_summary_mean(sample_desk):
     assert summary(sample_desk)["mean"] == pytest.approx(16.5)
+
+
+def test_status_counts(sample_desk):
+    assert status_counts(sample_desk) == {"closed": 2, "assigned": 1, "open": 1}
+
+
+def test_rows_are_named(sample_desk):
+    """Rows are read by field name; an open ticket has no hours."""
+    table = rows(sample_desk)
+    assert table[0].status == "closed"
+    assert table[0].hours == 3.0
+    assert table[3].hours is None
+
+
+def test_work_queue_puts_soonest_first(sample_desk):
+    """The queue holds unfinished tickets, soonest deadline first."""
+    sample_desk.tickets.reverse()
+    queue = work_queue(sample_desk)
+    assert list(queue) == [3, 4]
