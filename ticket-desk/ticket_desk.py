@@ -2,6 +2,7 @@
 import logging
 from datetime import timedelta
 from desk import NOW, Ticket, redact, ticket_refs
+from stats import summary
 from storage import append_line, export_board, load_desk, read_lines, save_desk
 
 log = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ def main():
     export_board(desk, "board.txt")
     append_line("board.txt", "end of shift")
     print(read_lines("board.txt"))
+    print(summary(desk))
     save_desk(desk, DATA)
 
 

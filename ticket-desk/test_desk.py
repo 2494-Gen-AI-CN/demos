@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 
+import numpy as np
 import pytest
 
 from desk import NOW, Desk, Ticket, redact, ticket_refs
+from stats import breached, resolution_hours, summary
 from storage import load_desk, save_desk
 
 
@@ -76,3 +78,17 @@ def test_corrupt_file_raises_value_error(tmp_path):
 def test_sla_hours(priority, hours):
     ticket = Ticket(1, "Any title", priority, NOW)
     assert ticket.deadline() - NOW == timedelta(hours=hours)
+
+
+def test_hours_array_is_float(sample_desk):
+    hours = resolution_hours(sample_desk)
+    assert hours.dtype == np.float64
+    assert hours.shape == (2,)
+
+
+def test_breach_mask(sample_desk):
+    assert np.array_equal(breached(sample_desk), [False, True])
+
+
+def test_summary_mean(sample_desk):
+    assert summary(sample_desk)["mean"] == pytest.approx(16.5)
