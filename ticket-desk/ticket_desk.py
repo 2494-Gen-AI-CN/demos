@@ -1,6 +1,7 @@
 """Support-ticket desk: tickets, SLA deadlines and a board."""
 import logging
 from datetime import timedelta
+from chart import hours_chart, status_chart
 from desk import NOW, Ticket, redact, ticket_refs
 from frame import hours_by_priority, load_frame, status_table
 from report import status_counts
@@ -58,6 +59,8 @@ def main():
     print(df[["ticket_id", "priority", "status"]])
     print(status_table(df))
     print(hours_by_priority(df))
+    status_chart(df, "status.png")
+    hours_chart(df, "hours.png")
 
 
 if __name__ == "__main__":
