@@ -14,6 +14,8 @@ log = logging.getLogger(__name__)
 class Ticket:
     """A support ticket with a priority, a status and an SLA deadline."""
     def __init__(self, ticket_id, title, priority, opened_at):
+        if priority not in SLA_HOURS:
+            raise ValueError(f"unknown priority: {priority!r}")
         self.ticket_id = ticket_id
         self.title = title
         self.priority = priority

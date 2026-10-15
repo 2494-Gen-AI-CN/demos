@@ -2,6 +2,9 @@
 import logging
 from datetime import timedelta
 from desk import NOW, Desk, Ticket, redact, ticket_refs
+from storage import append_line, export_board, read_lines
+
+log = logging.getLogger(__name__)
 
 
 def main():
@@ -22,6 +25,15 @@ def main():
     t4.assign("Priya")
     t5.assign("Marco")
 
+    try:
+        extra = Ticket(7, "Refund charged twice", "urgent", NOW)
+    except ValueError as err:
+        log.error("rejected ticket: %s", err)
+    else:
+        desk.add(extra)
+    finally:
+        log.info("intake done")
+
     for t in desk:
         print(t.ticket_id, t.priority, t.status, t.days_open())
     late = desk.overdue()
@@ -30,6 +42,10 @@ def main():
     note = "Same problem as TD-2 and TD-5, reply to dana@example.com"
     print(ticket_refs(note))
     print(redact(note))
+
+    export_board(desk, "board.txt")
+    append_line("board.txt", "end of shift")
+    print(read_lines("board.txt"))
 
 
 if __name__ == "__main__":
