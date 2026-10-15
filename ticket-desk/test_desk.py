@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from desk import NOW, Desk, Ticket, redact, ticket_refs
+from frame import load_frame, status_table
 from report import rows, status_counts, work_queue
 from stats import breached, resolution_hours, summary
 from storage import load_desk, save_desk
@@ -112,3 +113,11 @@ def test_work_queue_puts_soonest_first(sample_desk):
     sample_desk.tickets.reverse()
     queue = work_queue(sample_desk)
     assert list(queue) == [3, 4]
+
+
+def test_value_counts_match_counter(tmp_path, sample_desk):
+    """The DataFrame counts the same statuses as the Counter."""
+    path = tmp_path / "tickets.json"
+    save_desk(sample_desk, path)
+    df = load_frame(path)
+    assert status_table(df).to_dict() == dict(status_counts(sample_desk))

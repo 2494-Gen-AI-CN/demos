@@ -2,6 +2,7 @@
 import logging
 from datetime import timedelta
 from desk import NOW, Ticket, redact, ticket_refs
+from frame import hours_by_priority, load_frame, status_table
 from report import status_counts
 from stats import summary
 from storage import append_line, export_board, load_desk, read_lines, save_desk
@@ -53,6 +54,10 @@ def main():
     print(summary(desk))
     print(status_counts(desk))
     save_desk(desk, DATA)
+    df = load_frame(DATA)
+    print(df[["ticket_id", "priority", "status"]])
+    print(status_table(df))
+    print(hours_by_priority(df))
 
 
 if __name__ == "__main__":
