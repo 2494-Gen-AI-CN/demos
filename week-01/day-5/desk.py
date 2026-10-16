@@ -125,3 +125,93 @@ match ticket["priority"]:
     case _: # This underscore wildcard acts as our default case
         print("Normal ticket?")
 
+
+# ==== Functions ====
+# Functions are reusable bits of logic - we can write them once and call them anywhere else
+# we can import functions to other files and reuse them across programs
+
+def deadline_for(ticket):
+    """Return the datetime by which this ticket must be closed"""
+    return ticket["opened_at"] + timedelta(hours=SLA_HOURS[ticket["priority"]])
+
+
+print(deadline_for(queue[0]))
+print(deadline_for.__doc__)
+
+def describe(ticket):
+    """Returns a pre-formatted ticket description"""
+    print(f"#{ticket['id']} {ticket['title']} - {ticket['priority']}")
+
+result = describe(queue[0])
+print(result) # None: describe just prints, it doesn't return anything. Similar to a void function in C# or Java
+
+# I can give my functions default argument values
+def hours_left_for(ticket, now=datetime.now()):
+    return (deadline_for(ticket) - now).total_seconds() / 3600
+
+# If I provide a default argument for my function, I can omit it from the function call IF im okay with the default value
+print(hours_left_for(queue[1]))
+
+# Here, I provide my own value for "now" - the default is not used
+print(hours_left_for(queue[1], now=NOW))
+
+# Finally, if I use argument_name=value, I can put my args in any order
+print(hours_left_for(now=NOW, ticket=queue[0]))
+
+# print(hours_left_for(now=NOW))
+
+
+
+# More complex function
+def status_for(ticket, now=NOW):
+    
+    """closed, breach, at risk or on time."""
+    if not ticket["open"]:
+        return "closed"
+    
+    hours = hours_left_for(ticket, now)
+    
+    if hours < 0:
+        return "breached"
+    
+    if hours < 2:
+        return "at risk"
+    
+    return "on time"
+
+# A trap about lists (dictionaries and other collections) and functions
+def log(entry, history=[]):
+    history.append(entry)
+    return history
+
+print(log("opened"))
+print(log("assigned"))
+
+def log_safely(entry, history=None):
+    
+    if history is None:
+        history = []
+    
+    history.append(entry)
+    return history
+
+# Lambda and sort keys
+# Lambdas - builds a one expression function with no name, right where it's used
+# Commonly used to satisfy sorting methods (providing comparison logic) and when making API calls
+
+# in general we want to use def to defined named functions
+# but python is chill - so this works I guess
+double = lambda n: n * 2 # notice no return keyword - whatever the expression evaluates to is assumed to be the return
+
+# Sort by priority
+by_text = sorted(queue, key=lambda t: t["priority"])
+
+for t in by_text:
+    print(t["priority"], t["title"]) # alphabetical - because what we really asked for above
+    # to sort off the value of the strings that correspond to the priority key - not what we actually wanted. 
+    # we can revisit comparisons later... 
+    
+# We've worked with lists - lets see actual python arrays
+from array import array 
+hours_open = array("d", [6.0, 22.5, 1.5]) # "d" - every item is a float
+hours_open.append(9.0) 
