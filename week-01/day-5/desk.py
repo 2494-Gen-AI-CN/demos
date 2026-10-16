@@ -227,7 +227,7 @@ class Ticket:
     # we take in self - this is a reference to the object that is created
     
     # If we want access modifiers we can use them, but there's only two. And they're convention
-    def __init__(self, ticket_id: int, title: str, priority, opened_at = datetime.now):
+    def __init__(self, ticket_id: int, title: str, priority, opened_at=NOW):
         self.ticket_id = ticket_id
         self.title = title
         self.priority = priority
@@ -235,14 +235,21 @@ class Ticket:
         self._assignee = None # underscore on a property denotes "protected", intended for internal or subclass use only
         self.is_open = True
         
-    def __init__(self, ticket: int):
-        self.ticket_id
+    # Python has NO constructor overloading: a second __init__ would REPLACE the first one
+    # (the room saw the TypeError), so this stays commented out.
+    # def __init__(self, ticket: int):
+    #     self.ticket_id = ticket
+
+    # A read-only way at the private field (a "getter"); subclasses use this instead of __opened_at
+    @property
+    def opened_at(self):
+        return self.__opened_at
     
     def deadline(self):
         return self.__opened_at + timedelta(hours=SLA_HOURS[self.priority])        
     
     def assign(self, agent):
-        self.assignee = agent
+        self._assignee = agent
 
     def close(self):
         self.is_open = False
@@ -295,7 +302,14 @@ class UrgentTicket(Ticket): # Inheritance syntax in Python
         normal = super().deadline() # super refers 
         
         # Cut our time in half - this one is really urgent
-        return self.__opened_at + (normal - self.__opened_at) / 2
+        # self.__opened_at would NOT work here: name mangling makes it _UrgentTicket__opened_at,
+        # which the parent never set. Go through the getter instead.
+        return self.opened_at + (normal - self.opened_at) / 2
+
+u1 = UrgentTicket(104, "Database down", "high", NOW, manager="Priya")
+print(u1)                 # __str__ is inherited
+print(t1.deadline())      # 4 hours after opening
+print(u1.deadline())      # 2 hours after opening - the override
         
 age: int = 35
         
