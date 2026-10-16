@@ -215,3 +215,87 @@ for t in by_text:
 from array import array 
 hours_open = array("d", [6.0, 22.5, 1.5]) # "d" - every item is a float
 hours_open.append(9.0) 
+
+
+# ==== CLasses and Objects ====
+# A class bundles data and methods that act on that data - Encapsulation. An object
+# is an instance of a class. Created using the class as a blueprint
+class Ticket:
+    """One support ticket the rules that belong it"""
+    
+    # This init function is my constructor
+    # we take in self - this is a reference to the object that is created
+    
+    # If we want access modifiers we can use them, but there's only two. And they're convention
+    def __init__(self, ticket_id: int, title: str, priority, opened_at = datetime.now):
+        self.ticket_id = ticket_id
+        self.title = title
+        self.priority = priority
+        self.__opened_at = opened_at # If we use a double underscore, we get a private field/property. This is "sort of" enforced
+        self._assignee = None # underscore on a property denotes "protected", intended for internal or subclass use only
+        self.is_open = True
+        
+    def __init__(self, ticket: int):
+        self.ticket_id
+    
+    def deadline(self):
+        return self.__opened_at + timedelta(hours=SLA_HOURS[self.priority])        
+    
+    def assign(self, agent):
+        self.assignee = agent
+
+    def close(self):
+        self.is_open = False
+    
+    # If we want to print our object out or create a string representation of it beyond a memory address
+    # we override __str__()
+    def __str__(self):
+        return f"#{self.ticket_id} {self.title} {self.priority}"
+
+t1 = Ticket(101, "Login page returns 500", "high")
+
+print(type(t1))
+print(t1.ticket_id)
+print(t1._assignee) # This isn't enforced at all, its a signal to other human devs
+# print(t1.__opened_at) # When we give a property a double underscore Python uses "name mangling" to sorta obfuscate it
+
+# I can get around this trivially easily
+# __opened_at still exists, but the Interpreter made it's name _Ticket__opened_at
+print(t1._Ticket__opened_at)
+
+# In python I can add/remove things from a runtime object
+t1.new_property = "New"
+
+print(t1.new_property)
+
+# Deleting the property with del
+# del t1.new_property
+
+# I can also delete a property using delattr()
+delattr(t1, "new_property")
+
+# print(t1.new_property)
+
+print(t1)
+
+# Inheritance 
+# I can save time when writing related classes via inheritance 
+# Lets create a subclass of Ticket for urgent tickets.
+# If I don't override something that comes from Ticket - I inherit that implementation
+
+class UrgentTicket(Ticket): # Inheritance syntax in Python
+    """A ticket that gets half the usual time"""
+    
+    def __init__(self, ticket_id, title, priority, opened_at, manager):
+        self.manager = manager
+        super().__init__(ticket_id, title, priority, opened_at) # passing args to the parent class constructor
+    
+    # Overriding the deadline function
+    def deadline(self):
+        normal = super().deadline() # super refers 
+        
+        # Cut our time in half - this one is really urgent
+        return self.__opened_at + (normal - self.__opened_at) / 2
+        
+age: int = 35
+        
