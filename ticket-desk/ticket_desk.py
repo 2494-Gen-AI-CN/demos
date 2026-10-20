@@ -31,15 +31,14 @@ def main():
         t4 = Ticket(4, "Checkout button frozen", "high", NOW - timedelta(hours=6))
         t5 = Ticket(5, "Export is missing rows", "normal", NOW - timedelta(hours=26))
         t6 = Ticket(6, "Add dark mode", "low", NOW - timedelta(hours=2))
-        
-    # desk = Desk()
-    for t in [t1, t2, t3, t4, t5, t6]:
-        desk.add(t)
-    t1.close(t1.opened_at + timedelta(hours=3))
-    t2.close(t2.opened_at + timedelta(hours=30))
-    t3.close(t3.opened_at + timedelta(hours=10))
-    t4.assign("Priya")
-    t5.assign("Marco")
+
+        for t in [t1, t2, t3, t4, t5, t6]:
+            desk.add(t)
+        t1.close(t1.opened_at + timedelta(hours=3))
+        t2.close(t2.opened_at + timedelta(hours=30))
+        t3.close(t3.opened_at + timedelta(hours=10))
+        t4.assign("Priya")
+        t5.assign("Marco")
     
     # In python this is the syntax for handling exceptions: try-except
     try:
