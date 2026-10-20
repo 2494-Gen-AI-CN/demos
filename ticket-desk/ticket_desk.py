@@ -2,21 +2,37 @@
 import logging
 from datetime import timedelta
 from desk import NOW, Desk, Ticket, redact, ticket_refs
-from storage import append_line, export_board, read_lines, delete_file
+from storage import append_line, export_board, load_desk, save_desk
 from time import sleep
 
 log = logging.getLogger(__name__)
 
+# Creating a constant for the file path to my json file
+DATA = "tickets.json"
+
 def main():
-    """Build the sample desk, print the board and the overdue count."""
+    """Load or seed the desk, print the board and save the tickets."""
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
-    t1 = Ticket(1, "Login page returns 500", "high", NOW - timedelta(hours=30))
-    t2 = Ticket(2, "Invoice PDF is blank", "normal", NOW - timedelta(hours=50))
-    t3 = Ticket(3, "Typo on pricing page", "normal", NOW - timedelta(hours=20))
-    t4 = Ticket(4, "Checkout button frozen", "high", NOW - timedelta(hours=6))
-    t5 = Ticket(5, "Export is missing rows", "normal", NOW - timedelta(hours=26))
-    t6 = Ticket(6, "Add dark mode", "low", NOW - timedelta(hours=2))
-    desk = Desk()
+    
+    # Using our JSON file
+    try:
+        desk = load_desk(DATA)
+    except ValueError:
+        log.error("Failed to read tickets.json")
+        desk = Desk()
+    
+    
+    # If my desk is empty (file didn't exist, or contained no tickets)
+    # then use my old code to seed the desk
+    if len(desk) == 0:
+        t1 = Ticket(1, "Login page returns 500", "high", NOW - timedelta(hours=30))
+        t2 = Ticket(2, "Invoice PDF is blank", "normal", NOW - timedelta(hours=50))
+        t3 = Ticket(3, "Typo on pricing page", "normal", NOW - timedelta(hours=20))
+        t4 = Ticket(4, "Checkout button frozen", "high", NOW - timedelta(hours=6))
+        t5 = Ticket(5, "Export is missing rows", "normal", NOW - timedelta(hours=26))
+        t6 = Ticket(6, "Add dark mode", "low", NOW - timedelta(hours=2))
+        
+    # desk = Desk()
     for t in [t1, t2, t3, t4, t5, t6]:
         desk.add(t)
     t1.close(t1.opened_at + timedelta(hours=3))
@@ -59,13 +75,15 @@ def main():
     export_board(desk, "board.txt")
     append_line("board.txt", "end of shift")
     
-    sleep(5)
+    # sleep(5)
     
-    delete_file("board.txt")
+    # delete_file("board.txt")
     
-    sleep(5)
+    # sleep(5)
     
-    delete_file("board.txt")
+    # delete_file("board.txt")
+    
+    save_desk(desk, DATA)
 
 
 if __name__ == "__main__":
