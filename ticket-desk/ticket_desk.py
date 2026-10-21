@@ -5,6 +5,7 @@ from desk import NOW, Desk, Ticket, redact, ticket_refs
 from storage import append_line, export_board, load_desk, save_desk
 from time import sleep
 from stats import summary
+from report import status_counts
 
 log = logging.getLogger(__name__)
 
@@ -86,6 +87,10 @@ def main():
     save_desk(desk, DATA)
 
     print(summary(desk))
+    
+    print(status_counts(desk))
+    
+    
 
 if __name__ == "__main__":
     main()
