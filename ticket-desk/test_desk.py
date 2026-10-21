@@ -2,8 +2,11 @@ from datetime import datetime, timedelta
 import pytest 
 from desk import NOW, Desk, Ticket, redact, ticket_refs
 from storage import load_desk, save_desk
+import numpy as np
+from stats import breached, resolution_hours, summary
+import numpy.testing as npt
 
-"""This file contains test for desk.py"""
+"""This file contains tests for Desk object stuff"""
 
 # Inside a test file (who's name starts with "test_", our methods also start with)
 # our methods also start with "test_"
@@ -14,7 +17,7 @@ def test_high_priority_deadline_is_four_hours():
     ticket = Ticket(1, "Login page returns 500", "high", opened)
 
     # Act
-    # Call the code that is under test   
+    # Call the code that is under test 
     
     # Assert 
     # Assert something about the outcome of a method - this is what defines
@@ -112,4 +115,24 @@ def test_corrupt_file_raises_value_error(tmp_path):
 def test_sla_hours(priority, hours):
     ticket = Ticket(1, "Any title", priority, NOW)
     assert ticket.deadline() - NOW == timedelta(hours=hours)
+
+def test_hours_array_float(sample_desk):
+    # We think intuitively that when we do a comparison of two np.arrays
+    # we are comparing the entire array and getting back one True or False
+    # What we're actually getting back is [True, True] 
+    # assert resolution_hours(sample_desk) == [3.0, 30.0]
+    hours = resolution_hours(sample_desk)
+    assert hours.dtype == np.float64 # correct data type
+    assert hours.shape == (2,) # asserting we should have a 2 position 1-d array
     
+    # This is for demo/curiosity only 
+    # npt.assert_allclose(hours, sample_desk, rtol=1e-7)
+    
+    # assert np.array_equal(hours, sample_desk) # see if the arrays are the same shape,
+    # as well as the same contents
+
+def test_breach_mask(sample_desk):
+    assert np.array_equal(breached(sample_desk), [False, True])    
+    
+def test_summary_mean(sample_desk):
+    assert summary(sample_desk)["mean"] == pytest.approx(16.5)

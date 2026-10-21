@@ -4,6 +4,7 @@ from datetime import timedelta
 from desk import NOW, Desk, Ticket, redact, ticket_refs
 from storage import append_line, export_board, load_desk, save_desk
 from time import sleep
+from stats import summary
 
 log = logging.getLogger(__name__)
 
@@ -84,6 +85,7 @@ def main():
     
     save_desk(desk, DATA)
 
+    print(summary(desk))
 
 if __name__ == "__main__":
     main()
