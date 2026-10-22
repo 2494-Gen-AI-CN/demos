@@ -3,9 +3,10 @@ import logging
 from datetime import timedelta
 from desk import NOW, Desk, Ticket, redact, ticket_refs
 from storage import append_line, export_board, load_desk, save_desk
-from time import sleep
 from stats import summary
 from report import status_counts
+from frame import hours_by_priority, load_frame, status_table
+from chart import hours_chart, status_chart
 
 log = logging.getLogger(__name__)
 
@@ -90,7 +91,14 @@ def main():
     
     print(status_counts(desk))
     
-    
+    df = load_frame(DATA)
+    print(df[["ticket_id", "priority", "status"]])
+    print(status_table(df))
+    print(hours_by_priority(df))
 
+    status_chart(df, "status.png")
+    hours_chart(df, "hours.png")
+    
+    
 if __name__ == "__main__":
     main()
