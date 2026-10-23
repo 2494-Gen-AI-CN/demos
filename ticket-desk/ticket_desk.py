@@ -6,7 +6,7 @@ from desk import NOW, Ticket, redact, ticket_refs
 from frame import hours_by_priority, load_frame, status_table
 from report import status_counts
 from stats import summary
-from storage import append_line, export_board, load_desk_db, read_lines, save_desk
+from storage import append_line, export_board, load_desk_db, open_board, read_lines, save_desk
 
 log = logging.getLogger(__name__)
 DATA = "tickets.json"
@@ -17,6 +17,8 @@ def main():
     logging.basicConfig(level=logging.INFO, format="%(levelname)s %(name)s: %(message)s")
     conn = connect()
     desk = load_desk_db(conn)
+    for row in open_board(conn):
+        print(row["ref"], row["customer"], row["agent"], row["deadline"])
 
     try:
         extra = Ticket(7, "Refund charged twice", "urgent", NOW)

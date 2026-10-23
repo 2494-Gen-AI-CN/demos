@@ -127,12 +127,7 @@ def insert_ticket(conn, ticket, customer_id):
 def close_ticket_db(conn, ticket_id, at):
     """Close a ticket in the database at the given moment and commit."""
     cursor = conn.cursor()
-    cursor.execute(
-        """UPDATE tickets
-        SET status = 'closed', closed_at = %s
-        WHERE ticket_id = %s""",
-        (at, ticket_id),
-    )
+    cursor.callproc("close_ticket", (ticket_id, at))
     conn.commit()
 
 
@@ -157,12 +152,6 @@ def assign_ticket(conn, ticket_id, agent_id):
         )
         if cursor.rowcount == 0:
             raise ValueError(f"ticket {ticket_id} was not assigned")
-        cursor.execute(
-            """INSERT INTO ticket_events (ticket_id, kind, note)
-            VALUES (%s, 'assigned', %s)""",
-            (ticket_id, f"agent {agent_id}"),
-        )
-        event_id = cursor.lastrowid
         conn.commit()
     except (mysql.connector.Error, ValueError):
         conn.rollback()
@@ -170,4 +159,13 @@ def assign_ticket(conn, ticket_id, agent_id):
         raise
     finally:
         cursor.close()
-    return event_id
+
+
+def open_board(conn):
+    """Return the rows of the open_board view, one dict per ticket."""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM open_board")
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.commit()
+    return rows

@@ -12,7 +12,7 @@ from desk import NOW, Desk, Ticket, redact, ticket_refs
 from frame import load_frame, status_table
 from report import rows, status_counts, work_queue
 from stats import breached, resolution_hours, summary
-from storage import assign_ticket, insert_ticket, load_desk, load_desk_db, save_desk
+from storage import assign_ticket, insert_ticket, load_desk, load_desk_db, open_board, save_desk
 
 
 def test_high_priority_deadline_is_four_hours():
@@ -194,3 +194,21 @@ def test_assign_closed_ticket_raises(conn):
     """A closed ticket is refused, and nothing is written."""
     with pytest.raises(ValueError, match="ticket 1"):
         assign_ticket(conn, 1, 2)
+
+
+def test_status_change_writes_event(conn):
+    """A change of status writes one history row through the trigger."""
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM ticket_events WHERE ticket_id = %s", (6,))
+    before = cursor.fetchone()[0]
+    cursor.execute("UPDATE tickets SET status = 'assigned', agent_id = 1 WHERE ticket_id = 6")
+    cursor.execute("SELECT COUNT(*) FROM ticket_events WHERE ticket_id = %s", (6,))
+    assert cursor.fetchone()[0] == before + 1
+
+
+def test_open_board_skips_closed(conn):
+    """The open board lists tickets, and none of them is closed."""
+    board = open_board(conn)
+    assert len(board) > 0
+    for row in board:
+        assert row["status"] != "closed"
