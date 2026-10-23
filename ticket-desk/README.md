@@ -17,3 +17,7 @@ Open the mysql client inside the container, and type the password `desk` at the 
     docker exec -it desk-mysql mysql -uroot -p
 
 After a reboot, start the same container again with `docker start desk-mysql`.
+
+Build the desk's database and its tables from `ticket-desk/`:
+
+    docker exec -i desk-mysql mysql -uroot -pdesk < sql/schema.sql
