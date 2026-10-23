@@ -12,7 +12,7 @@ from desk import NOW, Desk, Ticket, redact, ticket_refs
 from frame import load_frame, status_table
 from report import rows, status_counts, work_queue
 from stats import breached, resolution_hours, summary
-from storage import insert_ticket, load_desk, load_desk_db, save_desk
+from storage import assign_ticket, insert_ticket, load_desk, load_desk_db, save_desk
 
 
 def test_high_priority_deadline_is_four_hours():
@@ -176,3 +176,21 @@ def test_insert_rejects_unknown_customer(conn):
     """A ticket for a customer who does not exist is refused by the foreign key."""
     with pytest.raises(mysql.connector.IntegrityError):
         insert_ticket(conn, Ticket(7, "Ghost ticket", "low", NOW), 99)
+
+
+def test_assign_unknown_agent_rolls_back(conn):
+    """A failed assignment leaves the ticket exactly as it was."""
+    cursor = conn.cursor()
+    cursor.execute("SELECT status, agent_id FROM tickets WHERE ticket_id = %s", (6,))
+    before = cursor.fetchone()
+    conn.commit()
+    with pytest.raises(mysql.connector.IntegrityError):
+        assign_ticket(conn, 6, 99)
+    cursor.execute("SELECT status, agent_id FROM tickets WHERE ticket_id = %s", (6,))
+    assert cursor.fetchone() == before
+
+
+def test_assign_closed_ticket_raises(conn):
+    """A closed ticket is refused, and nothing is written."""
+    with pytest.raises(ValueError, match="ticket 1"):
+        assign_ticket(conn, 1, 2)
