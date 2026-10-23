@@ -1,15 +1,18 @@
 """Tests for the desk rules, storage, hours, counts and charts."""
+import os
 from datetime import datetime, timedelta
 
+import mysql.connector
 import numpy as np
 import pytest
 
 from chart import hours_chart, status_chart
+from db import connect
 from desk import NOW, Desk, Ticket, redact, ticket_refs
 from frame import load_frame, status_table
 from report import rows, status_counts, work_queue
 from stats import breached, resolution_hours, summary
-from storage import load_desk, save_desk
+from storage import insert_ticket, load_desk, load_desk_db, save_desk
 
 
 def test_high_priority_deadline_is_four_hours():
@@ -148,3 +151,28 @@ def test_charts_write_png(tmp_path, sample_desk):
     hours_chart(df, tmp_path / "hours.png")
     for name in ["status.png", "hours.png"]:
         assert (tmp_path / name).stat().st_size > 0
+
+
+@pytest.fixture
+def conn():
+    """Yield a database connection, then roll back whatever the test changed."""
+    if "DESK_DB_PASSWORD" not in os.environ:
+        pytest.skip("no database")
+    connection = connect()
+    yield connection
+    connection.rollback()
+    connection.close()
+
+
+def test_load_desk_db_reads_seeded_tickets(conn):
+    """The six seeded tickets load from the database in id order."""
+    ids = []
+    for ticket in load_desk_db(conn):
+        ids.append(ticket.ticket_id)
+    assert ids == [1, 2, 3, 4, 5, 6]
+
+
+def test_insert_rejects_unknown_customer(conn):
+    """A ticket for a customer who does not exist is refused by the foreign key."""
+    with pytest.raises(mysql.connector.IntegrityError):
+        insert_ticket(conn, Ticket(7, "Ghost ticket", "low", NOW), 99)

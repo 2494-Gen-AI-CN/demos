@@ -88,3 +88,56 @@ def load_desk(path):
     for record in records:
         desk.add(from_record(record))
     return desk
+
+
+def load_desk_db(conn):
+    """Return a desk holding every ticket in the database, in id order."""
+    cursor = conn.cursor()
+    cursor.execute("SELECT agent_id, name FROM agents")
+    names = dict(cursor.fetchall())
+    cursor.execute(
+        """SELECT ticket_id, title, priority, status, agent_id, opened_at, closed_at
+        FROM tickets
+        ORDER BY ticket_id"""
+    )
+    desk = Desk()
+    for ticket_id, title, priority, status, agent_id, opened_at, closed_at in cursor.fetchall():
+        ticket = Ticket(ticket_id, title, priority, opened_at)
+        ticket.status = status
+        ticket.assignee = names.get(agent_id)
+        ticket.closed_at = closed_at
+        desk.add(ticket)
+    cursor.close()
+    conn.commit()
+    return desk
+
+
+def insert_ticket(conn, ticket, customer_id):
+    """Insert a new ticket for a customer and commit it."""
+    cursor = conn.cursor()
+    cursor.execute(
+        """INSERT INTO tickets (ticket_id, title, priority, customer_id, opened_at)
+        VALUES (%s, %s, %s, %s, %s)""",
+        (ticket.ticket_id, ticket.title, ticket.priority, customer_id, ticket.opened_at),
+    )
+    conn.commit()
+
+
+def close_ticket_db(conn, ticket_id, at):
+    """Close a ticket in the database at the given moment and commit."""
+    cursor = conn.cursor()
+    cursor.execute(
+        """UPDATE tickets
+        SET status = 'closed', closed_at = %s
+        WHERE ticket_id = %s""",
+        (at, ticket_id),
+    )
+    conn.commit()
+
+
+def delete_ticket_db(conn, ticket_id):
+    """Delete a ticket, commit, and return how many rows went."""
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM tickets WHERE ticket_id = %s", (ticket_id,))
+    conn.commit()
+    return cursor.rowcount
