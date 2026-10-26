@@ -1,6 +1,7 @@
 """Support-ticket desk: tickets, SLA deadlines and a board."""
 import logging
 from datetime import timedelta
+from pathlib import Path
 from desk import NOW, Desk, Ticket, redact, ticket_refs
 from storage import append_line, export_board, load_desk, save_desk
 from stats import summary
@@ -12,6 +13,7 @@ log = logging.getLogger(__name__)
 
 # Creating a constant for the file path to my json file
 DATA = "tickets.json"
+PLOTS = Path("plots")  # the charts are tracked here (D-0069)
 
 def main():
     """Load or seed the desk, print the board and save the tickets."""
@@ -96,8 +98,9 @@ def main():
     print(status_table(df))
     print(hours_by_priority(df))
 
-    status_chart(df, "status.png")
-    hours_chart(df, "hours.png")
+    PLOTS.mkdir(exist_ok=True)
+    status_chart(df, PLOTS / "status.png")
+    hours_chart(df, PLOTS / "hours.png")
     
     
 if __name__ == "__main__":
