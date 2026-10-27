@@ -6,6 +6,7 @@ Live demo code typed in class, 2494 Gen-AI Python.
 
 - `ticket-desk/` — the support-ticket desk. One small project that grows week by week, from week 1 to week 5: Python modules and files now, a MySQL database next, then an ETL job and an LLM. From week 2 on, this is the code typed in class, and every class ends with a commit on `main`.
 - `week-01/` — the loose scripts from the first week, one folder per day, kept as they were typed.
+- `activities/` — workbooks for in-class activities, one folder per week. Not code and not marked: open them in Excel, Google Sheets or LibreOffice. Each folder has a `README.md` that says what to do with them.
 
 ## Run the desk
 
