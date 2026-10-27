@@ -10,7 +10,7 @@ CREATE DATABASE IF NOT EXISTS ticket_desk;
 USE ticket_desk; -- we need to specify in our file, which database we want these commands to run against
 
 CREATE TABLE IF NOT EXISTS customers (
-    customer_id INT,
+    customer_id INT, -- will become a PK
     name VARCHAR(100),
     email VARCHAR(255),
     country CHAR(2), -- If we try to insert something that isn't exactly 2 characters, we get an error
@@ -18,18 +18,18 @@ CREATE TABLE IF NOT EXISTS customers (
 );
 
 CREATE TABLE IF NOT EXISTS agents (
-    agent_id INT,
+    agent_id INT, -- will become a PK
     name VARCHAR(50),
     email VARCHAR(255)
 );
 
 CREATE TABLE IF NOT EXISTS tickets (
-    ticket_id INT,
+    ticket_id INT, -- will become a PK
     title VARCHAR(200),
     priority VARCHAR(10),
     status VARCHAR(10),
-    customer_id INT, -- will corresponds to a customer on the customer table
-    agent_id INT, -- will correspond to an agent in the agent table
+    customer_id INT, -- will corresponds to a customer on the customer table (FK)
+    agent_id INT, -- will correspond to an agent in the agent table (FK)
     opened_at DATETIME,
     closed_at DATETIME
 );
