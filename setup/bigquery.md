@@ -42,6 +42,14 @@ If Google offers a free trial or asks for a card, close that offer. You don't ne
 
    You should see `Google Cloud SDK` followed by a version number and a short list of components (including `bq`).
 
+5. **Windows only:** in Git Bash, the `bq` command can't find the copy of Python the SDK installed for itself, and fails with `python3.14: command not found`. Tell it where that copy is by pasting this line into Git Bash and pressing Enter:
+
+   ```bash
+   echo 'export CLOUDSDK_PYTHON="$LOCALAPPDATA/Google/Cloud SDK/google-cloud-sdk/platform/bundledpython/python.exe"' >> ~/.bashrc
+   ```
+
+   `~/.bashrc` is a settings file Git Bash reads every time a window opens, and `>>` adds the line to the end of it, so you only do this once. Then close Git Bash and open a new window, so it reads the file. (`gcloud` works without this; only `bq` needs it. macOS: skip this step.)
+
 ## 4. Log in from the terminal
 
 Type these one at a time in Git Bash (macOS: Terminal). Put your own project ID in the middle one.
@@ -79,6 +87,7 @@ All three match? You're done. We'll run the same check together at the start of 
 | What you see | What to do |
 |---|---|
 | `gcloud: command not found` | Close Git Bash and open a new one. If it still fails, run the same commands in PowerShell instead. Your login is shared between terminals, so it only has to work once. |
+| `ERROR: (bq) python3.14: command not found` (or another `python3.x`) | You skipped the Windows-only step at the end of section 3, or this Git Bash window was open before you did it. Do that step, then open a new Git Bash window. If it still fails, check that `ls "$LOCALAPPDATA/Google/Cloud SDK/google-cloud-sdk/platform/bundledpython/python.exe"` prints the path; if it says `No such file`, the SDK was installed somewhere else, so post the error in the class channel. |
 | You can't create a project, or see "organization policy" | You're signed in with a work or school account. Sign in with a personal Google account and run `gcloud auth login` again. |
 | The browser doesn't open after a `login` command | Add `--no-launch-browser` to the end (for example `gcloud auth login --no-launch-browser`), open the link it prints, sign in, and paste the code it gives you back into the terminal. |
 | `Access Denied` or `does not have bigquery.jobs.create` | The terminal is using the wrong account or project. Check `gcloud auth list` and `gcloud config get-value project`; fix them with `gcloud config set account <your gmail>` and `gcloud config set project desk-<your id>`. |
