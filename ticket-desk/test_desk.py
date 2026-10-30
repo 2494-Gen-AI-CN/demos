@@ -9,6 +9,7 @@ import pytest
 from chart import hours_chart, status_chart
 from db import connect
 from desk import NOW, Desk, Ticket, redact, ticket_refs
+from extract import write_jsonl
 from frame import load_frame, status_table
 from report import rows, status_counts, work_queue
 from stats import breached, resolution_hours, summary
@@ -212,3 +213,11 @@ def test_open_board_skips_closed(conn):
     assert len(board) > 0
     for row in board:
         assert row["status"] != "closed"
+
+
+def test_write_jsonl_writes_one_object_per_line(tmp_path):
+    """One row with a datetime becomes one JSON line, the time written as text."""
+    path = tmp_path / "events.jsonl"
+    write_jsonl([{"event_id": 1, "created_at": datetime(2026, 10, 18, 8, 0)}], path)
+    with open(path, encoding="utf-8") as f:
+        assert f.read().splitlines() == ['{"event_id": 1, "created_at": "2026-10-18 08:00:00"}']
