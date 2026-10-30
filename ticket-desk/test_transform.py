@@ -1,10 +1,11 @@
 """Tests for the warehouse transforms, with no database and no BigQuery."""
-from datetime import date
+from datetime import date, datetime
 from decimal import Decimal
 
+import pandas as pd
 import pytest
 
-from transform import OPEN_END, apply_scd2
+from transform import OPEN_END, apply_scd2, clean_events
 
 AS_OF = date(2026, 11, 5)
 
@@ -44,3 +45,45 @@ def test_rerun_after_change_adds_nothing(dimension):
     source[0]["monthly_fee"] = Decimal("199.00")
     once = apply_scd2(dimension, source, AS_OF)
     assert apply_scd2(once, source, AS_OF) == once
+
+
+@pytest.fixture
+def staged():
+    """Return four staged events out of id order, and the tickets they belong to."""
+    events = pd.DataFrame({
+        "event_id": [2, 1, 3, 4],
+        "ticket_id": [4, 4, 2, 6],
+        "kind": ["assigned", "assigned", "closd", "assigned"],
+        "note": ["copy", "good", "typo", "early"],
+        "created_at": [datetime(2026, 10, 19, 9), datetime(2026, 10, 19, 9),
+                       datetime(2026, 10, 18, 18), datetime(2026, 10, 19, 11)],
+    })
+    tickets = pd.DataFrame({
+        "ticket_id": [2, 4, 6],
+        "opened_at": [datetime(2026, 10, 17, 12), datetime(2026, 10, 19, 8),
+                      datetime(2026, 10, 19, 12)],
+    })
+    return events, tickets
+
+
+def test_clean_keeps_good_rows(staged):
+    """Only the good event comes out clean, in the five event columns."""
+    events, tickets = staged
+    clean = clean_events(events, tickets)[0]
+    assert list(clean["event_id"]) == [1]
+    assert list(clean.columns) == ["event_id", "ticket_id", "kind", "note", "created_at"]
+
+
+def test_clean_rejects_each_bad_row_with_its_reason(staged):
+    """Each bad event is rejected once, with the rule it broke."""
+    events, tickets = staged
+    rejects = clean_events(events, tickets)[1]
+    assert list(rejects["event_id"]) == [2, 3, 4]
+    assert list(rejects["reason"]) == ["duplicate", "unknown kind", "before ticket opened"]
+
+
+def test_clean_keeps_first_copy_of_a_duplicate(staged):
+    """Of two copies listed out of order, the one with the higher event_id is rejected."""
+    events, tickets = staged
+    rejects = clean_events(events, tickets)[1]
+    assert list(rejects[rejects["reason"] == "duplicate"]["event_id"]) == [2]
