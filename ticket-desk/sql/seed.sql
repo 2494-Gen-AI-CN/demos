@@ -38,7 +38,7 @@ INSERT INTO ticket_tags VALUES (1, 1), (2, 2), (4, 2), (4, 3), (6, 3);
 
 
 -- Im going to comment these out once we run them - let's see our constraints in action
-INSERT INTO tickets (ticket_id, title, priority, status, customer_id, agent_id, opened_at, closed_at)
-VALUES
-    (7, 'Login page returns 500', 'high', 'closed', 1, NULL, '2026-10-18 08:00:00', '2026-10-11 11:00:00');
+-- INSERT INTO tickets (ticket_id, title, priority, status, customer_id, agent_id, opened_at, closed_at)
+-- VALUES
+--     (7, 'Login page returns 500', 'high', 'closed', 1, NULL, '2026-10-18 08:00:00', '2026-10-11 11:00:00');
 

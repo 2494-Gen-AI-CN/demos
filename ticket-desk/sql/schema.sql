@@ -33,7 +33,10 @@ CREATE TABLE tickets (
     customer_id INT NOT NULL, -- points to a record in customers table
     agent_id INT, -- CAN be null, when a ticket is created but not yet assigned. Points to agents table
     opened_at DATETIME NOT NULL,
-    closed_at DATETIME CHECK (closed_at IS NULL OR closed_at >= opened_at), -- can't have a ticket closed before it was ever opened
+    closed_at DATETIME,
+    -- can't have a ticket closed before it was ever opened
+    -- (a CHECK that compares two columns goes here, at table level: on a column it can only name that column)
+    CHECK (closed_at IS NULL OR closed_at >= opened_at),
     -- Lets add our Foreign Key constraints
     FOREIGN KEY (priority) REFERENCES priorities (priority),
     FOREIGN KEY (customer_id) REFERENCES customers (customer_id),
