@@ -7,6 +7,7 @@ Live demo code typed in class, 2494 Gen-AI Python.
 - `ticket-desk/` — the support-ticket desk. One small project that grows week by week, from week 1 to week 5: Python modules and files now, a MySQL database next, then an ETL job and an LLM. From week 2 on, this is the code typed in class, and every class ends with a commit on `main`.
 - `week-01/` — the loose scripts from the first week, one folder per day, kept as they were typed.
 - `activities/` — files for in-class activities, one folder per activity: spreadsheets to normalize (week 3, Wednesday) and a sample database with a question sheet to query (week 3, Thursday). Not marked. Each folder has a `README.md` that says what to do with them.
+- `setup/` — set-up steps to do at home before a week that needs new tools. [`setup/bigquery.md`](setup/bigquery.md): your free Google BigQuery project and the `gcloud` and `bq` commands, done before week 4.
 
 ## Run the desk
 
