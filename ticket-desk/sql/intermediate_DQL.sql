@@ -98,7 +98,7 @@ FROM agents AS a
 LEFT JOIN tickets as t ON t.agent_id = a.agent_id;
 
 -- Complex/multi-joins
-SELECT t.ticket_id, t.title, t.priority, t.status, c.name, a.name, DATE_ADD(t.opened_at, INTERVAL p.sla_hours HOUR) AS deadline
+EXPLAIN SELECT t.ticket_id, t.title, t.priority, t.status, c.name, a.name, DATE_ADD(t.opened_at, INTERVAL p.sla_hours HOUR) AS deadline
 FROM tickets AS t
 JOIN customers AS c ON c.customer_id = t.customer_id -- our first join, joining tickets and customers on customer_id
 JOIN priorities AS p ON p.priority = t.priority
