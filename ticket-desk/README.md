@@ -21,3 +21,10 @@ After a reboot, start the same container again with `docker start desk-mysql`.
 Build the desk's database and its tables from `ticket-desk/`:
 
     docker exec -i desk-mysql mysql -uroot -pdesk < sql/schema.sql
+
+## Warehouse
+
+The warehouse is BigQuery, in your own sandbox project `desk-<id>`, the gcloud default project.
+Two datasets, both in `northamerica-northeast2` (Toronto): `desk_raw` holds a copy of each desk table, and `desk_dw` holds the tables built for analysis.
+Load them from `ticket-desk/` with `python extract.py`, then `bash warehouse/load_raw.sh`.
+The sandbox is free with no card: 10 GB of storage, 1 TB of queries a month, and a table expires after 60 days at most.
