@@ -1,8 +1,12 @@
 """Transform the desk's rows before they go into the warehouse."""
 from datetime import date
 
+import pandas as pd
+
 OPEN_END = date(9999, 12, 31)
 TRACKED = ("name", "email", "country", "monthly_fee")
+EVENT_KINDS = ("open", "assigned", "closed")
+EVENT_COLUMNS = ["event_id", "ticket_id", "kind", "note", "created_at"]
 
 
 def apply_scd2(dimension, source, as_of):
@@ -21,3 +25,16 @@ def apply_scd2(dimension, source, as_of):
                          effective_to=OPEN_END, is_current=True))
         next_key += 1
     return rows
+
+
+def clean_events(events, tickets):
+    """Split staged events into clean rows and rejects, each reject with its reason."""
+    events = events.sort_values("event_id")
+    events = events.merge(tickets[["ticket_id", "opened_at"]], on="ticket_id", how="left")
+    reason = pd.Series("", index=events.index)
+    reason[events.duplicated(["ticket_id", "kind", "created_at"])] = "duplicate"
+    reason[~events["kind"].isin(EVENT_KINDS)] = "unknown kind"
+    reason[events["created_at"] < events["opened_at"]] = "before ticket opened"
+    bad = reason != ""
+    rejects = events[bad].assign(reason=reason[bad])
+    return events[~bad][EVENT_COLUMNS], rejects[EVENT_COLUMNS + ["reason"]]

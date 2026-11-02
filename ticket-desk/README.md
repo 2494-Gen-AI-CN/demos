@@ -28,3 +28,9 @@ The warehouse is BigQuery, in your own sandbox project `desk-<id>`, the gcloud d
 Two datasets, both in `northamerica-northeast2` (Toronto): `desk_raw` holds a copy of each desk table, and `desk_dw` holds the tables built for analysis.
 Load them from `ticket-desk/` with `python extract.py`, then `bash warehouse/load_raw.sh`.
 The sandbox is free with no card: 10 GB of storage, 1 TB of queries a month, and a table expires after 60 days at most.
+
+## ETL job
+
+Set `DESK_DB_PASSWORD=deskapp` and `DESK_GCP_PROJECT=desk-<id>`, then run `python etl.py` from `ticket-desk/`; it prints the row it adds to `desk_dw.load_log`.
+A rerun reads only events above the highest `event_id` already staged, so it changes no table but the log.
+`pytest` tests the transforms in `transform.py` with no MySQL and no BigQuery.

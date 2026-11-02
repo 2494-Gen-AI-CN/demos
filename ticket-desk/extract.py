@@ -19,6 +19,16 @@ def read_table(conn, table):
     return rows
 
 
+def read_events(conn, after):
+    """Return the desk's events with an event_id above after, oldest first."""
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT * FROM ticket_events WHERE event_id > %s ORDER BY event_id", (after,))
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.commit()
+    return rows
+
+
 def write_csv(rows, path):
     """Write rows to a CSV file, with a header row of column names."""
     with open(path, "w", newline="", encoding="utf-8") as f:
