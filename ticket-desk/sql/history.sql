@@ -1,5 +1,7 @@
 USE ticket_desk;
 
+SELECT * FROM ticket_events;
+
 -- The desk's event history for 2026-10-17 to 2026-10-19, in the trigger's words.
 INSERT INTO ticket_events (ticket_id, kind, note, created_at)
 VALUES
