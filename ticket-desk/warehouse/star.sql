@@ -30,7 +30,7 @@ SELECT
     NULL;
 
 -- the customers, each row with a key the warehouse owns
-CREATE OR REPLACE TABLE desk_dw.dim_customer AS
+CREATE TABLE IF NOT EXISTS desk_dw.dim_customer AS
 SELECT
     ROW_NUMBER() OVER (ORDER BY customer_id) as customer_key,
     customer_id,
