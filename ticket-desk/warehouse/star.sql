@@ -79,11 +79,8 @@ SELECT
     e.kind,
     ROUND(DATETIME_DIFF(e.created_at, t.opened_at, MINUTE) / 60, 2) as hours_since_open,
     1 as event_count
-FROM desk_raw.ticket_events as e
+FROM desk_raw.ticket_events_clean as e
 JOIN desk_raw.tickets as t on t.ticket_id = e.ticket_id
 JOIN desk_dw.dim_customer as c on c.customer_id = t.customer_id
-WHERE e.kind in ('open', 'assigned', 'closed')
 AND DATE(e.created_at) >= c.effective_from
-AND DATE(e.created_at) < c.effective_to
-AND e.created_at >= t.opened_at
-QUALIFY ROW_NUMBER() OVER (PARTITION BY e.ticket_id, e.kind, e.created_at ORDER BY e.event_id) = 1;
+AND DATE(e.created_at) < c.effective_to;

@@ -1,0 +1,13 @@
+We triage support tickets into exactly three priorities:
+high (respond within 4 hours), normal (24 hours), low (72 hours).
+
+<example>Login page returns 500 -> high</example>
+<example>Typo on pricing page -> normal</example>
+<example>Add dark mode -> low</example>
+
+For each ticket, answer with exactly one word from: high, normal, low, unsure.
+Then one reason line. Answer unsure when the title gives no evidence.
+
+Checkout button frozen
+Export is missing rows
+Invoice PDF is blank

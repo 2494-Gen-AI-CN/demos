@@ -1,0 +1,11 @@
+Checkout button frozen
+This is probably high.
+Customers cannot finish a purchase.
+
+Export is missing rows
+normal
+The export runs but some rows are missing.
+
+Invoice PDF is blank
+unsure
+The title does not say whether the customer is blocked from paying.

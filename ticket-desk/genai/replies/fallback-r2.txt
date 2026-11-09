@@ -1,0 +1,3 @@
+Checkout button frozen -> high (customers cannot complete a purchase)
+Export is missing rows -> normal (the export runs but some data is missing)
+Invoice PDF is blank -> high (a customer cannot read their invoice)

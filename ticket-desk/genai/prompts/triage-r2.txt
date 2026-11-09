@@ -1,0 +1,11 @@
+We triage support tickets into exactly three priorities:
+high (respond within 4 hours), normal (24 hours), low (72 hours).
+
+<example>Login page returns 500 -> high</example>
+<example>Typo on pricing page -> normal</example>
+<example>Add dark mode -> low</example>
+
+Give the priority for each of these tickets:
+Checkout button frozen
+Export is missing rows
+Invoice PDF is blank

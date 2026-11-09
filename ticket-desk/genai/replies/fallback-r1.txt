@@ -1,0 +1,5 @@
+Here are suggested priorities:
+
+1. **Checkout button frozen** - P1 (Critical): customers cannot complete purchases, which directly affects revenue.
+2. **Export is missing rows** - P2 (High): data is incomplete, but the export still runs.
+3. **Invoice PDF is blank** - P2 (High): customers cannot view their invoices, which may delay payments.
