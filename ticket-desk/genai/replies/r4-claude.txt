@@ -1,0 +1,11 @@
+Checkout button frozen
+high
+A frozen checkout button likely blocks customers from completing purchases, which is a revenue-critical failure.
+
+Export is missing rows
+normal
+Missing rows in an export is a data-integrity problem, but the title gives no sign of a full outage or a blocked workflow.
+
+Invoice PDF is blank
+normal
+A blank invoice PDF is a functional defect that affects billing documents, but the title does not show that payments or access are blocked.

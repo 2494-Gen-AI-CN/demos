@@ -1,0 +1,7 @@
+Here's how I'd triage them, using your examples as the calibration points:
+
+- **Checkout button frozen → high.** This blocks customers from paying, so it's a direct revenue hit and is comparable to the login 500.
+- **Export is missing rows → high.** Silent data loss is serious because people may act on incomplete data without realizing it. If the export is a nice-to-have and users can easily spot the gap, you could argue for normal, but I'd lean high until you know the scope.
+- **Invoice PDF is blank → normal.** It's a broken core function, but there's usually a workaround (re-download, view the invoice in the app), and it doesn't stop anyone from using the product. Bump it to high if invoices are tied to a billing deadline or compliance requirement.
+
+None of these fit low, since low is reserved for feature requests like dark mode rather than defects.

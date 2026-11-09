@@ -1,0 +1,5 @@
+Here are the assigned priorities for each support ticket based on system impact:
+
+* **Checkout button frozen** $\rightarrow$ **high** (Directly blocks transactions and revenue generation; requires a rapid response within 4 hours).
+* **Export is missing rows** $\rightarrow$ **normal** (Data integrity or reporting issue that impairs functionality but doesn't completely block core operations; respond within 24 hours).
+* **Invoice PDF is blank** $\rightarrow$ **high** (Prevents customers from viewing or accessing critical billing documents; requires a rapid response within 4 hours).

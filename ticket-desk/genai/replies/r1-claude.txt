@@ -1,0 +1,15 @@
+Here's how I'd prioritize them, assuming a standard P1 (highest) to P3 scale:
+
+| Ticket | Priority | Reasoning |
+|---|---|---|
+| Checkout button frozen | **P1 / Critical** | Blocks purchases directly, so it means immediate lost revenue and affects every customer who hits it. |
+| Export is missing rows | **P2 / High** | Silent data loss is serious because people may make decisions on incomplete data without realizing it. It's not blocking revenue, but it erodes trust and needs a fast fix. |
+| Invoice PDF is blank | **P2 / High** (or P3 if a workaround exists) | Customers can't get billing documents, which can cause accounting and compliance headaches. If invoices can be regenerated or viewed elsewhere in the app, it drops to P3. |
+
+A few things could shift these:
+
+- **Scope:** If the export or invoice issue affects only one account or a rare edge case, I'd lower it. If it affects many customers, I'd raise it.
+- **Checkout:** If the freeze happens only on one browser or device, it's still urgent, but the scale of impact changes how many people you pull in.
+- **Export:** If it's a compliance or financial export, bump it up to P1.
+
+If you tell me how many users are affected for each, I can refine these.

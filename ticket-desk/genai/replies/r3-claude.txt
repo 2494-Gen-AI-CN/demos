@@ -1,0 +1,11 @@
+**Checkout button frozen**
+high
+Blocks customers from completing purchases, so it directly affects revenue and is comparable to the login 500 example.
+
+**Export is missing rows**
+unsure
+The title doesn't say whether this is silent data loss that users rely on for critical work or an occasional edge case, so there's no clear evidence for a priority.
+
+**Invoice PDF is blank**
+unsure
+The title doesn't indicate how widespread it is or whether it blocks billing or compliance for customers, so it could be high or normal depending on scope.

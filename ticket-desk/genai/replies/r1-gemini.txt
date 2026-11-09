@@ -1,0 +1,7 @@
+Here are the suggested priorities for each support ticket based on business impact and urgency:
+
+| Support Ticket | Priority | Reason |
+| --- | --- | --- |
+| **Checkout button frozen** | **P1 (Critical / Urgent)** | Directly blocks revenue generation and customer transactions. Requires immediate intervention. |
+| **Invoice PDF is blank** | **P2 (High)** | Impacts billing compliance and customer trust, but does not block the core purchasing flow. |
+| **Export is missing rows** | **P3 (Medium)** | Data integrity or reporting issue that affects workflow efficiency, but typically has workaround options or non-blocking impact. |

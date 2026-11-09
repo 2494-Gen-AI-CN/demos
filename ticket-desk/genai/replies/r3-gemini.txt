@@ -1,0 +1,13 @@
+* Checkout button frozen
+* **high**
+* Reason: A frozen checkout button completely blocks revenue generation and user purchases, requiring immediate resolution.
+
+
+* Export is missing rows
+* **normal**
+* Reason: Data corruption or incomplete exports affect reporting and data integrity, needing timely attention within a standard business day.
+
+
+* Invoice PDF is blank
+* **high**
+* Reason: Inability to generate or view invoices disrupts billing and financial transactions, severely impacting customers.

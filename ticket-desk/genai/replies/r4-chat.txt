@@ -1,0 +1,5 @@
+Checkout button frozen high The checkout function is blocked, preventing customers from completing purchases.
+
+Export is missing rows normal The export is producing incomplete data, affecting data accuracy.
+
+Invoice PDF is blank normal The invoice PDF is unusable, preventing access to invoice information.

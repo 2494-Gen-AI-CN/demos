@@ -1,0 +1,3 @@
+- Checkout button frozen → high (respond within 4 hours)
+- Export is missing rows → high (respond within 4 hours)
+- Invoice PDF is blank → high (respond within 4 hours)

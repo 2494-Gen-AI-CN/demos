@@ -1,0 +1,13 @@
+| Support ticket | Priority | Reason |
+| --- | --- | --- |
+| Checkout button frozen | P1 – Critical | Blocks customers from completing purchases; directly impacts revenue. |
+| Export is missing rows | P2 – High | Causes incomplete data and potentially affects reporting or business decisions. |
+| Invoice PDF is blank | P2 – High | Prevents customers from accessing usable invoices and may affect accounting. |
+
+Recommended order:
+
+1. Checkout button frozen — fix immediately.
+2. Export is missing rows — investigate and prioritize.
+3. Invoice PDF is blank — investigate and resolve promptly.
+
+Assumption: P1 means critical, P2 means high. Priorities may change depending on the number of affected users and available workarounds.

@@ -1,0 +1,11 @@
+Checkout button frozen
+high
+A frozen checkout directly blocks revenue generation and requires immediate intervention within the high priority SLA.
+
+Export is missing rows
+normal
+Missing data in an export impairs regular reporting functions but does not halt core transactional operations, fitting the normal priority SLA.
+
+Invoice PDF is blank
+high
+A completely blank invoice prevents customers from viewing billing records and requires urgent attention to ensure financial compliance and trust.

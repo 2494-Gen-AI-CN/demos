@@ -1,0 +1,5 @@
+Checkout button frozen high Reason: Core purchasing functionality is blocked.
+
+Export is missing rows normal Reason: Data export is impaired, but the title doesn't indicate a complete outage.
+
+Invoice PDF is blank high Reason: Invoice documents are unusable, potentially blocking billing operations.
