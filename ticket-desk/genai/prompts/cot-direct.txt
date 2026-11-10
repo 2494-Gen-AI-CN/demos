@@ -1,0 +1,6 @@
+Four closed tickets from our help desk. SLA hours: high 4, normal 24, low 72.
+ticket 1, high, opened 2026-10-18 08:00, closed 2026-10-18 11:00
+ticket 2, normal, opened 2026-10-17 12:00, closed 2026-10-18 18:00
+ticket 3, normal, opened 2026-10-18 18:00, closed 2026-10-19 04:00
+ticket 5, normal, opened 2026-10-18 12:00, closed 2026-10-19 16:00
+Which tickets missed their SLA, and by how many hours? Answer with only the list, no explanation.

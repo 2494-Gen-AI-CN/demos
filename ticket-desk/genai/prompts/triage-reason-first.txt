@@ -1,0 +1,6 @@
+For each ticket, first list what the title tells you and what it does not:
+who is affected, whether work is blocked, whether there is a workaround.
+Only then give the priority (high, normal, low, or unsure if the title
+does not say enough) on a last line that starts with "Priority:".
+
+Invoice PDF is blank

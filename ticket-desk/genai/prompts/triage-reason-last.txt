@@ -1,0 +1,4 @@
+For each ticket, give the priority (high, normal or low) on the first line,
+then explain your reasoning.
+
+Invoice PDF is blank

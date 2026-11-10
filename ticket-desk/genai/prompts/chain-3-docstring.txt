@@ -1,0 +1,6 @@
+Here are checked descriptions of each function in extract.py:
+
+<paste the checked descriptions from prompt 2 here>
+
+Draft a module docstring: one summary line under 80 characters, then a short
+paragraph naming the functions a reader would call first.

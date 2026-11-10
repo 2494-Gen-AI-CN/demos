@@ -1,0 +1,8 @@
+Here is extract.py again, and the checked list of its functions:
+
+<paste the full text of extract.py here>
+
+<paste the list from prompt 1 here>
+
+For each function in the list, write one line for its inputs and one line
+for what it returns or writes. Use only what the code shows.

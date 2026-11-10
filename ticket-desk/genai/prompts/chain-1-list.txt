@@ -1,0 +1,5 @@
+Here is a Python module, extract.py:
+
+<paste the full text of extract.py here>
+
+List every function the module defines, one name per line, and nothing else.
