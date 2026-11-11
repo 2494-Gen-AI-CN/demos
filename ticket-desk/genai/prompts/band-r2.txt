@@ -1,0 +1,10 @@
+I am adding a function to a Python ticket desk. Priorities have SLA hours:
+high 4, normal 24, low 72.
+
+Write ticket_age_band(hours) with these rules:
+- hours < 4 returns "under 4"
+- 4 <= hours <= 24 returns "4 to 24" (both edges included)
+- hours > 24 returns "over 24"
+
+Expected: 3 -> "under 4", 4 -> "4 to 24", 24 -> "4 to 24", 25 -> "over 24".
+Style: plain if statements, no imports, a one-line docstring that starts "Return".

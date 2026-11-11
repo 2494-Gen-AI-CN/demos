@@ -1,0 +1,4 @@
+Here is apply_scd2 from our warehouse job. Make it faster. Keep the same
+behaviour and the same signature.
+
+<paste the full code of transform.apply_scd2 here>

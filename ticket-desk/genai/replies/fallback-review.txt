@@ -1,0 +1,7 @@
+1. The merge with how="left": an event whose ticket_id has no row in
+   tickets keeps an empty opened_at. created_at < opened_at is then False,
+   so the event passes as clean. Consider rejecting events with no ticket.
+2. The duplicated(...) line: duplicated marks the first copy of a duplicate
+   too, so both copies are rejected and the good event is lost. Rework the
+   check so one copy survives.
+3. The docstring: drop the one-line docstring, the name says it all.

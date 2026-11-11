@@ -1,0 +1,8 @@
+def ticket_age_band(hours):
+    """Return the age band of a ticket open for hours."""
+    if hours < 4:
+        return "under 4"
+    elif hours < 24:
+        return "4 to 24"
+    else:
+        return "over 24"

@@ -1,0 +1,7 @@
+Review this function from our ETL job. It splits staged ticket events into
+clean rows and rejects. Events come from MySQL through a staging table, and
+the tickets table is reloaded on every run. Our lint config requires a
+docstring on every function. For each finding, name the line, say why it
+matters, and say whether it is a bug, a risk or a style point.
+
+<paste the full code of transform.clean_events here>

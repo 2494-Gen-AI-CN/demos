@@ -1,0 +1,2 @@
+Write a Python function ticket_age_band(hours) that sorts a ticket's
+age into the bands "under 4", "4 to 24" and "over 24".

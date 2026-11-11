@@ -1,0 +1,7 @@
+def read_events(conn, after):
+    """Return events created after the timestamp after.
+
+    Args:
+        conn: an open connection to the desk's database.
+        after: a timestamp; only events created after it are returned.
+    """

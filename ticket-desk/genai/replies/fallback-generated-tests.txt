@@ -1,0 +1,17 @@
+from bands import ticket_age_band
+
+
+def test_under_four_hours():
+    assert ticket_age_band(3) == "under 4"
+
+
+def test_four_hours_is_middle_band():
+    assert ticket_age_band(4) == "4 to 24"
+
+
+def test_twenty_four_hours():
+    assert ticket_age_band(24) == "over 24"
+
+
+def test_long_open_ticket():
+    assert ticket_age_band(72) == "over 24"
