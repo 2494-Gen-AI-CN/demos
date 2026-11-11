@@ -21,7 +21,16 @@ def read_table(conn, table):
     return rows # don't forget the return 
 
 def read_events(conn, after):
-    """Returns the desk's events with an event id above after, oldest first."""
+    """Return ticket desk events newer than the provided event id.
+
+    Args:
+        conn: A database connection to the ticket desk database.
+        after: The minimum event_id value to include; rows with event_id greater
+            than this value are returned in ascending event_id order.
+
+    Returns:
+        A list of event rows as dictionaries, ordered from oldest to newest.
+    """
     cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT * FROM ticket_events WHERE event_id > %s ORDER BY event_id", (after,))
     rows = cursor.fetchall()
